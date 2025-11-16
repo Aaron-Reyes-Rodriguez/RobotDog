@@ -17,6 +17,7 @@ from go2_webrtc_connect.go2_webrtc_driver.constants import RTC_TOPIC, SPORT_CMD
 
 CMD_RATE_HZ = 1           # Move publish rate
 
+conn = Go2WebRTCConnection(WebRTCConnectionMethod.LocalAP)
 
 class DogController: 
     def __init__(self): 
@@ -40,8 +41,11 @@ class DogController:
             RTC_TOPIC["SPORT_MOD"],
             {"api_id": SPORT_CMD["StandOut"], "parameter": {"data": on}}
         ))
-
-
+    async def wave(self):
+        await conn.datachannel.pub_sub.publish_request_new(
+            RTC_TOPIC["SPORT_MOD"],
+            {"api_id": SPORT_CMD["Hello"]}
+        )
     async def move(self): 
         dt = 1.0 / CMD_RATE_HZ
 
@@ -52,6 +56,7 @@ class DogController:
                 {"api_id": SPORT_CMD["Move"],
                  "parameter": {"x": 1, "y": 0, "z": 0}}
             )
+    
 
     def flip(self, direction: str):
         api = SPORT_CMD[{
@@ -63,7 +68,7 @@ class DogController:
         self._schedule(self._publish(
             RTC_TOPIC["SPORT_MOD"],
             {"api_id": api, "parameter": {"data": True}}
-        ))
+        ))  
     #-----------Audio test----
 
     def sing(self, mp3_filename: str = "Fetty Wap.mp3"):

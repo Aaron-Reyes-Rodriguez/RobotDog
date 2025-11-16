@@ -73,6 +73,17 @@ ROBOT_METHODS = [
             }
         }
     },
+    {
+        "type": "function",
+        "function": {
+            "name": "wave",
+            "description": "Make the robot dog do a flip in direction: front, back, left, right",
+            "parameters": {
+                "type": "object",
+                "properties": {}
+            }
+        }
+    },
 ]
 
 def interpret_command(user_input: str) -> dict:
@@ -137,7 +148,9 @@ def execute_robot_command(controller: DogController, command_result: dict):
         direction = args["direction"]
         controller.flip(direction)
         print(f'flip direction: {direction}')
-    
+    elif function_name == "wave":
+        controller.wave()
+        print('Dog is waving')
     else:
         print(f"Unknown function: {function_name}")
 
