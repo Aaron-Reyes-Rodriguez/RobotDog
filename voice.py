@@ -1,5 +1,4 @@
 import speech_recognition as sr
-import openai
 
 def voice_to_text():
     r = sr.Recognizer()

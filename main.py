@@ -129,7 +129,7 @@ def execute_robot_command(controller: DogController, command_result: dict):
         print(f"Handstand: {'ON' if on else 'OFF'}")
         
     elif function_name == "sing":
-        filename = args["filename"]
+        filename = args["mp3_filename"]
         controller.sing(filename)
         print(f"Playing: {filename}")
 
