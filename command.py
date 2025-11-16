@@ -43,15 +43,11 @@ class DogController:
         ))
 
     def wave(self):
-        self._schedule(self._hello())
-
-    async def _hello(self):
-        await conn.datachannel.pub_sub.publish_request_new(
+        """Wave hello"""
+        self._schedule(self._publish(
             RTC_TOPIC["SPORT_MOD"],
-            {"api_id": SPORT_CMD["Hello"],
-             "parameter": {"name": "normal"}
-            }
-        )
+            {"api_id": SPORT_CMD["Hello"]}
+        ))
     async def move(self): 
         dt = 1.0 / CMD_RATE_HZ
 
