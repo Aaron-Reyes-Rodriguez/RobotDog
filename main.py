@@ -89,7 +89,7 @@ ROBOT_METHODS = [
 def interpret_command(user_input: str) -> dict:
     try:
         response = client.chat.completions.create(
-            model="anthropic/claude-3.5-sonnet",
+            model="anthropic/claude-haiku-4.5",
             messages=[
                 {
                     "role": "system",
