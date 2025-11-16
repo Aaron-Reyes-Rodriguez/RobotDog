@@ -84,6 +84,23 @@ ROBOT_METHODS = [
             }
         }
     },
+    {
+        "type": "function",
+        "function": {
+            "name": "dance",
+            "description": "Make the robot dog do a dance. Default dance is style 1 and style 2 is the other dance",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "style": {
+                        "type": "int",
+                        "description": "The dance that the dog will do. Options are 1 and 2. Option 1 is the default"
+                    }
+                },
+                "required": ["style"]
+            }
+        }
+    }
 ]
 
 def interpret_command(user_input: str) -> dict:
@@ -153,6 +170,10 @@ def execute_robot_command(controller: DogController, command_result: dict):
     elif function_name == "wave":
         controller.wave()
         print('Dog is waving')
+    elif function_name == "dance":
+        style = args["style"]
+        controller.dance(style)
+        print(f'Dog is dancing style: {style} ')
     else:
         print(f"Unknown function: {function_name}")
 

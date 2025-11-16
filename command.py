@@ -44,10 +44,23 @@ class DogController:
 
     def wave(self):
         """Wave hello"""
+        self.set_mode("normal")
         self._schedule(self._publish(
             RTC_TOPIC["SPORT_MOD"],
             {"api_id": SPORT_CMD["Hello"]}
         ))
+        self.set_mode("ai")
+    
+    def dance(self, style=1):
+        """Dance (style 1 or 2)"""
+        self.set_mode("normal")
+        cmd = "Dance1" if style == 1 else "Dance2"
+        self._schedule(self._publish(
+            RTC_TOPIC["SPORT_MOD"],
+            {"api_id": SPORT_CMD[cmd]}
+        ))
+        self.set_mode("ai")
+
     async def move(self): 
         dt = 1.0 / CMD_RATE_HZ
 
