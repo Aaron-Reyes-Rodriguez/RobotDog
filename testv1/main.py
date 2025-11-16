@@ -56,7 +56,12 @@ def main():
             print("Closing connection…")
             c.close()
             break
-
+        # --------------------------
+        # Circle
+        # --------------------------
+        elif user_input.lower() == "circle":
+            c.flip("right")
+        
         else:
             print("Unknown command. Try: handstand on | handstand off | sing file.mp3 | quit")
 
