@@ -136,7 +136,7 @@ def execute_robot_command(controller: DogController, command_result: dict):
     elif function_name =="flip":
         direction = args["direction"]
         controller.flip(direction)
-        print('flip direct: {direction}')
+        print(f'flip direction: {direction}')
     
     else:
         print(f"Unknown function: {function_name}")
