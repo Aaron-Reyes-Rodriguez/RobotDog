@@ -108,7 +108,9 @@ def interpret_command(user_input: str) -> dict:
         if message.tool_calls:
             tool_call = message.tool_calls[0]
             function_name = tool_call.function.name
-            function_args = json.loads(tool_call.function.arguments)
+            
+            # FIX: Handle None or empty arguments
+            function_args = json.loads(tool_call.function.arguments) if tool_call.function.arguments else {}
                 
             return {
                 "function": function_name,
