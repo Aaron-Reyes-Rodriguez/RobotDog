@@ -64,9 +64,13 @@ class DogController:
             RTC_TOPIC["SPORT_MOD"],
             {"api_id": api, "parameter": {"data": True}}
         ))
-
-
-
+    
+    def dance(self, style=1):
+        """Make dog dance"""
+        if style == 1:
+            self._send_sport_command(SPORT_CMD["Dance1"])
+        else:
+            self._send_sport_command(SPORT_CMD["Dance2"])
     #-----------Audio test----
 
     def sing(self, mp3_filename: str = "Fetty Wap.mp3"):
@@ -83,7 +87,7 @@ class DogController:
         if self.conn:
             self.conn.pc.addTrack(audio_track)
             await asyncio.sleep(5)  # Adjust based on song duration or use player events
-
+    
 
     def close(self):
         if self.conn:
