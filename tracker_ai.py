@@ -4,6 +4,8 @@ import json
 import requests
 import cv2
 from typing import Optional, Dict
+from dotenv import load_dotenv
+load_dotenv()
 
 
 OPENROUTER_API_KEY = os.environ.get("OPENROUTER_API_KEY")

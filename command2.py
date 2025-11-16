@@ -6,6 +6,8 @@ import time
 import cv2
 import numpy as np
 from queue import Queue
+import traceback
+
 
 #from go2_webrtc_driver.webrtc_driver import Go2WebRTCConnection, WebRTCConnectionMethod
 #from go2_webrtc_driver.constants import RTC_TOPIC, SPORT_CMD
@@ -77,20 +79,19 @@ class DogController:
         ))
     
     def move(self, forward: float, turn: float):
-        # Adjust these parameter keys to match your SPORT_CMD["Move"] spec!
         params = {
-            "vx": forward,    # forward/back speed
-            "vy": 0.0,        # no strafing
-            "vyaw": turn      # turning speed
+            "vx": forward,
+            "vy": 0.0,
+            "vyaw": turn,
         }
-
         self._schedule(self._publish(
             RTC_TOPIC["SPORT_MOD"],
             {
                 "api_id": SPORT_CMD["Move"],
-                "parameter": params
+                "parameter": params,
             }
-        )) 
+        ))
+ 
 
 
     #-----------Audio test----
@@ -119,10 +120,17 @@ class DogController:
 
     # ------ PRIVATE 
 
-    def _run_loop(self): 
+    def _run_loop(self):
         asyncio.set_event_loop(self.loop)
-        self.loop.run_until_complete(self._async_setup())
+        try:
+            self.loop.run_until_complete(self._async_setup())
+        except Exception as e:
+            print("[DOG] _async_setup FAILED:", repr(e))
+            traceback.print_exc()
+            return  # do not call run_forever if setup failed
+
         self.loop.run_forever()
+
 
     def _schedule(self, coro):
         """ Create a task for the thread to run"""
@@ -133,19 +141,38 @@ class DogController:
         await self.conn.datachannel.pub_sub.publish_request_new(topic, payload)
 
     async def _async_setup(self):
-        """Connect to the dog and set up video callbacks."""
+        """Connect to the dog and set up video callbacks with debug logs."""
+        print("[DOG] Creating WebRTC connection (LocalAP)...")
         self.conn = Go2WebRTCConnection(WebRTCConnectionMethod.LocalAP)
+
+        print("[DOG] Connecting to Go2 over WebRTC...")
         await self.conn.connect()
+        print("[DOG] WebRTC connected. PC state:", self.conn.pc.connectionState)
+
+        # Show what transceivers we negotiated with the dog
+        try:
+            trans_info = [
+                (t.kind, getattr(t, "direction", None))
+                for t in self.conn.pc.getTransceivers()
+            ]
+            print("[DOG] Transceivers:", trans_info)
+        except Exception as e:
+            print("[DOG] Could not list transceivers:", e)
 
         @self.conn.pc.on("track")
         async def on_track(track):
-            print("Track received:", track.kind)
+            print(f"[DOG] Track received: kind={track.kind}")
 
             if track.kind == "video":
+                print("[DOG] Video track registered, waiting for frames...")
+
                 @track.on("frame")
                 def on_frame(frame):
                     img = frame.to_ndarray(format="bgr24")
                     self.latest_frame = img
+                    # Only print occasionally so it doesn’t spam:
+                    # print("[DOG] Got a video frame.")
+
 
 
 
