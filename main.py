@@ -43,7 +43,7 @@ ROBOT_METHODS = [
         "type": "function",
         "function": {
             "name": "sing",
-            "description": "Make the robot dog play an audio/music file. .MP3 should be concatenated to the last word of the song title and any spaces in a song title should be replaced with an underscore",
+            "description": "Make the robot dog play an audio/music file. .MP3 should be concatenated to the last word of the song title and any spaces in a song title should be replaced with an underscore.",
             "parameters": {
                 "type": "object",
                 "properties": {
