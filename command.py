@@ -64,13 +64,6 @@ class DogController:
             RTC_TOPIC["SPORT_MOD"],
             {"api_id": api, "parameter": {"data": True}}
         ))
-    
-    def dance(self, style=1):
-        """Make dog dance"""
-        if style == 1:
-            self._send_sport_command(SPORT_CMD["Dance1"])
-        else:
-            self._send_sport_command(SPORT_CMD["Dance2"])
     #-----------Audio test----
 
     def sing(self, mp3_filename: str = "Fetty Wap.mp3"):

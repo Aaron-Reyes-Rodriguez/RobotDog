@@ -18,8 +18,7 @@ dog = DogController()
 available_methods = {
     "handstand": dog.handstand,
     "sing": dog.sing,
-    "flip": dog.flip,
-    "dance": dog.dance,
+    "flip": dog.flip
 }
 
 ROBOT_METHODS = [
@@ -74,29 +73,12 @@ ROBOT_METHODS = [
             }
         }
     },
-    {
-        "type": "function",
-        "function": {
-            "name": "dance",
-            "description": "Make the robot dog do a flip in direction: front, back, left, right",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "style": {
-                        "type": "int",
-                        "description": "Dance selection. 1 for dance 1, 2 for dance 2. Dance one is the default."
-                    }
-                },
-                "required": ["style"]
-            }
-        }
-    },
 ]
 
 def interpret_command(user_input: str) -> dict:
     try:
         response = client.chat.completions.create(
-            model="anthropic/claude-haiku-4.5",
+            model="anthropic/claude-3.5-sonnet",
             messages=[
                 {
                     "role": "system",
@@ -156,10 +138,6 @@ def execute_robot_command(controller: DogController, command_result: dict):
         controller.flip(direction)
         print(f'flip direction: {direction}')
     
-    elif function_name =="dance":
-        style = args["style"]
-        controller.flip(style)
-        print(f'Dance Style: {style}')
     else:
         print(f"Unknown function: {function_name}")
 
