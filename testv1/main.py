@@ -31,6 +31,12 @@ def main():
         elif user_input.lower() == "handstand off":
             c.handstand(False)
 
+        elif user_input == "backflip":
+            c.flip("back")
+        
+        elif user_input == "leftflip":
+            c.flip("left")
+
         # --------------------------
         # Sing
         # --------------------------
